@@ -1,40 +1,64 @@
-# 🚀 Graph-Based Data Modeling & Query System (SAP Order-to-Cash)
+# 🚀 Graph-Based SAP Order-to-Cash Query System
 
 ## 📌 Overview
 
-This project is a **full-stack data intelligence system** that converts SAP Order-to-Cash data into an **interactive graph + AI-powered query interface**.
+This project is a **full-stack data intelligence system** that transforms SAP Order-to-Cash (O2C) data into an **interactive graph visualization + AI-powered query interface**.
 
-It enables users to:
+It allows users to:
 
-* Visualize business processes as a graph
-* Explore relationships between entities
-* Ask questions in natural language and get **real data-backed answers (NL → SQL → Result)**
+* Visualize complex business relationships as a graph
+* Explore entities like customers, orders, deliveries, invoices, and payments
+* Ask natural language questions and receive **accurate, data-backed answers (NL → SQL → Result)**
+
+---
+
+## 📸 Screenshots
+
+<img width="1366" height="730" alt="image" src="https://github.com/user-attachments/assets/0e08ef92-15cb-4d1f-84ac-f8e93d11a0ef" />
+<img width="1366" height="686" alt="image" src="https://github.com/user-attachments/assets/db2f6af2-d5e3-42e0-b451-86be5e5adc15" />
+
+
+---
+
+## 🧩 Architecture Diagram
+
+```
+User (Frontend - React)
+        ↓
+Graph UI + Chat Panel
+        ↓
+Backend (Node.js + Express)
+        ↓
+Groq LLM (NL → SQL → Answer)
+        ↓
+SQLite Database
+```
 
 ---
 
 ## 🎯 Key Features
 
-### 🔹 Graph Visualization
+### 🔹 Interactive Graph Visualization
 
-* Interactive node-edge graph using React Flow
-* Expand nodes dynamically
-* View metadata for each entity
-* 590 nodes and 4000+ relationships visualized
+* 590+ nodes and 4000+ edges
+* Expandable nodes (double-click)
+* Node metadata inspection panel
+* Built using React Flow
 
 ---
 
-### 🔹 AI Chat (Groq Powered)
+### 🔹 AI-Powered Query System (Groq)
 
 * Natural Language → SQL → Answer pipeline
-* Uses **Groq API (llama3-70b-8192)** for fast and free inference
-* Displays generated SQL for transparency
+* Uses **Groq API (llama3-70b-8192)**
+* Displays generated SQL queries
 
 ---
 
 ### 🔹 Guardrails
 
-* Filters out irrelevant queries
-* Restricts system to SAP dataset-related questions only
+* Rejects off-topic queries
+* Ensures answers are grounded in SAP dataset
 
 ---
 
@@ -59,19 +83,19 @@ Frontend (React UI)
 ↓
 Backend `/api/chat`
 ↓
-Groq LLM (NL → SQL)
+Groq LLM (NL → SQL generation)
 ↓
-SQLite Execution
+SQLite executes query
 ↓
-Results → Groq LLM
+Results sent back to LLM
 ↓
-Final Answer → UI
+Final grounded answer returned
 
 ---
 
 ## 🗄️ Graph Data Model
 
-### Nodes:
+### Nodes
 
 * Customer
 * SalesOrder
@@ -81,7 +105,7 @@ Final Answer → UI
 * BillingDocument
 * Payment
 
-### Edges:
+### Edges
 
 * PLACES
 * CONTAINS
@@ -95,17 +119,53 @@ Final Answer → UI
 
 ---
 
+## 🧠 LLM Prompting Strategy
+
+The system uses a **3-step pipeline**:
+
+### 1. Guardrail Classification
+
+* Classifies query as SAP-related or off-topic
+* Rejects irrelevant queries
+
+### 2. SQL Generation
+
+* Injects database schema + relationships
+* Generates **safe SQLite SELECT queries only**
+
+### 3. Answer Generation
+
+* Executes SQL on real data
+* Produces grounded natural language responses
+
+---
+
+## 🛡️ Guardrails
+
+### ❌ Blocked Queries
+
+* General knowledge ("Who is Elon Musk?")
+* Creative writing ("Write a poem")
+
+### ✅ Allowed Queries
+
+* Business insights
+* Data analysis
+* Relationship tracing
+
+---
+
 ## 💡 Example Queries
 
-* "Which products are associated with the highest number of billing documents?"
-* "Trace the full flow of billing document 90504248"
-* "Find sales orders that are delivered but not billed"
+* Which products are associated with the highest number of billing documents?
+* Trace the full flow of billing document 90504248
+* Find sales orders that are delivered but not billed
 
 ---
 
 ## 🛠️ Setup Instructions
 
-### 1️⃣ Clone the repository
+### 1️⃣ Clone Repository
 
 ```bash
 git clone https://github.com/swagatikasahu123/Graph-base-sap-order-to-cash-query-system.git
@@ -126,7 +186,7 @@ Create `.env` file:
 ```env
 PORT=4000
 DB_PATH=./sap_o2c.db
-GROQ_API_KEY=gsk_your_key_here
+GROQ_API_KEY=your_api_key_here
 ```
 
 Run backend:
@@ -145,7 +205,7 @@ npm install
 npm run dev
 ```
 
-Frontend runs at:
+Open:
 
 ```
 http://localhost:5173
@@ -155,25 +215,25 @@ http://localhost:5173
 
 ## 🔐 Environment Variables
 
-| Variable     | Description    |
-| ------------ | -------------- |
-| PORT         | Backend port   |
-| DB_PATH      | SQLite DB path |
-| GROQ_API_KEY | Groq API key   |
+| Variable     | Description  |
+| ------------ | ------------ |
+| PORT         | Backend port |
+| DB_PATH      | SQLite DB    |
+| GROQ_API_KEY | Groq API key |
 
 ---
 
 ## 🧪 Testing
 
-### ✔ Valid Queries:
+### ✅ Valid Queries
 
-* Business insights (billing, orders, payments)
-* Relationship tracing
+* Billing insights
+* Order flow tracking
 
-### ❌ Guardrail Examples:
+### ❌ Guardrail Testing
 
-* "Who is Elon Musk?"
-* "Write a poem"
+* Who is Elon Musk?
+* Write a poem
 
 ---
 
@@ -190,31 +250,32 @@ http://localhost:5173
 
 ### Why Groq?
 
-* Completely free tier
-* Extremely fast inference
-* Strong performance for SQL generation
+* Free tier
+* Fast inference
+* Strong SQL generation
 
 ### Why SQLite?
 
-* Lightweight and portable
-* Ideal for relational SAP data
-* Supports complex joins efficiently
+* Lightweight
+* Ideal for structured SAP data
+* Efficient joins
 
 ### Why Graph Model?
 
-* SAP O2C involves multi-step relationships
-* Graph improves understanding of data flow
+* SAP O2C has complex relationships
+* Graph improves understanding
 
 ---
 
 ## 📊 Future Improvements
 
-* Graph filtering & clustering
-* Analytics dashboard (charts)
+* Graph filtering
+* Analytics dashboard
 * Query caching
 * Role-based access
 
 ---
+
 
 
 ---
