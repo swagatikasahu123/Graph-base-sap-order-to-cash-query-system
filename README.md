@@ -186,6 +186,7 @@ Create `.env` file:
 ```env
 PORT=4000
 DB_PATH=./sap_o2c.db
+CORS_ORIGINS=http://localhost:3000,http://localhost:5173
 GROQ_API_KEY=your_api_key_here
 ```
 
