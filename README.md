@@ -12,6 +12,10 @@ It allows users to:
 
 ---
 
+## Deployment
+🌐 Live Demo: https://fde-project.vercel.app
+🔗 Backend API: https://fde-project.onrender.com
+
 ## 📸 Screenshots
 
 <img width="1366" height="730" alt="image" src="https://github.com/user-attachments/assets/0e08ef92-15cb-4d1f-84ac-f8e93d11a0ef" />
